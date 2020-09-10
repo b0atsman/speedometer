@@ -7,36 +7,43 @@
 using namespace std::chrono_literals;
 using namespace std;
 
+// main loop run flag
 bool run {false};
 
+// signal handler
 void signalHandler(int sig)
 {
     run = false;
-    deinit();
-
-    (void) signal(SIGINT, SIG_DFL);
 }
 
 int main()
 {
-    // read period
+    // read interval
     const auto read_interval = 500ms;
 
+    // read speed value
     double speed;
 
+    // overtaking signal handling for SIGINT
     (void) signal(SIGINT, signalHandler);
 
-    auto res = init();
-    if (res > 0) {
+    // data bus initialization
+    auto res = data_bus::init();
+    if (res > 0) 
+    {
         cout << "Data bus init error! (" << res << ")" << endl;
 	return 1;
     }
 
     run = true;	
 
-    while(run) {
+    cout << "Speed display started. Press Ctrl+C to stop..." << endl;
+
+    // main loop
+    while(run) 
+    {
         // consume speed value
-	speed = consume();
+	speed = data_bus::consume();
 
         // set fixed floating format & precision for cout
         cout.setf(ios::fixed, ios::floatfield); 
@@ -48,4 +55,8 @@ int main()
         // sleep for read interval
         this_thread::sleep_for(read_interval);
     }
+
+    data_bus::deInit();
+
+    return 0;
 }

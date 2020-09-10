@@ -8,10 +8,11 @@
 using namespace std::chrono;
 using namespace std;
 
+// main loop run flag
 bool run {false};
 
 // degrees to radians conversion 
-inline double DegToRad(const double deg) { return deg * M_PI / 180.0; }
+inline double degToRad(const double deg) { return deg * M_PI / 180.0; }
 
 // static class for time based speed value generation
 class SpeedGenerator
@@ -42,52 +43,50 @@ public:
         int seed_fast = (seed_ms / seed_fast_divider) % 360;
     
         // calculating integer slow and fast oscillating speed parts, multiplied by precision depth
-        double speed_high = (sin(DegToRad(seed_slow)) + 1) * speed_high_multiplier;
-        double speed_low = (sin(DegToRad(seed_fast)) + 1) * speed_low_multiplier;
+        double speed_high = (sin(degToRad(seed_slow)) + 1) * speed_high_multiplier;
+        double speed_low = (sin(degToRad(seed_fast)) + 1) * speed_low_multiplier;
 
         // returning sum of speeds divided by precision depth 
         return (speed_high + speed_low);
     }
 };
 
+// signal handler
+
 void signalHandler(int sig)
 {
     run = false;
-    deinit();
-
-    (void) signal(SIGINT, SIG_DFL);
 }
 
 int main()
 {
     // generation interval
     const auto gen_interval = 500ms;
+
     // generated speed value
     double speed;
+
     // ms seed
     long int seed;
- 
-/* 
-    // test cases
-    cout << SpeedGenerator::generateSpeed(0) << endl;		// 55.0
-    cout << SpeedGenerator::generateSpeed(50) << endl;		// 56.73
-    cout << SpeedGenerator::generateSpeed(100) << endl;		// 58.45
-    cout << SpeedGenerator::generateSpeed(360) << endl;		// 65.84
-    cout << SpeedGenerator::generateSpeed(1000) << endl;	// 70.38
-*/ 
+  
+    // overtaking signal handling for SIGINT
     (void) signal(SIGINT, signalHandler);
 
-    auto res = init();
-    if (res > 0) {
+    // data bus initialization
+    auto res = data_bus::init();
+    if (res > 0) 
+    {
         cout << "Data bus init error! (" << res << ")" << endl;
 	return 1;
     }
 
     run = true;	
 
-    cout << "Speed value generator started. Press Ctrl+C to stop..." << endl;
+    cout << "Speed generator started. Press Ctrl+C to stop..." << endl;
     
-    while (run) {
+    // main loop
+    while (run) 
+    {
         // calculating ms seed from system time	
         seed = duration_cast<milliseconds>(steady_clock::now().time_since_epoch()).count();
 	
@@ -95,9 +94,13 @@ int main()
 	speed = SpeedGenerator::generateSpeed(seed);
 	
 	// poulate speed value 
-        populate(speed);
+        data_bus::populate(speed);
 	
 	// sleep for generation interval	
         this_thread::sleep_for(gen_interval);
     }
+
+    data_bus::deInit();
+
+    return 0;
 }
