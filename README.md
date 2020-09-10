@@ -34,13 +34,13 @@ Ubuntu Linux (tested on v.18.04)
 
 ### Usage
 
-Inside first terminal window run command:
+In the first terminal window run command:
 
 *./speed_generator*
 
-Inside second terminal window run command (multiple displays allowed):
+In the second terminal window run command (multiple clients allowed):
 
 *./speed_display*
   
-Generated speed data will be displayed in speed_generator console, received speed data will be displayed in speed_display console.
+Generated speed data will be logged in speed_generator console, received speed data will be displayed in speed_display console.
   
