@@ -1,6 +1,6 @@
 # speedometer
 
-## Description
+### Description
 
 Sample project for IPC demo.
 
@@ -10,7 +10,15 @@ Speed displays receives speed value from data_bus library via API, and displays 
 
 User must have permissions to be able to create /tmp/speed_data file (created automatically upon start of any application).
 
-## Build procedure:
+### Requirements
+
+CMake v3.0 (tested on v.3.10.2) 
+
+g++ (tested on v.7.5)
+
+Ubuntu Linux (tested on v.18.04)
+
+### Build procedure
 
 *git clone https://github.com/b0atsman/speedometer.git*
 
@@ -24,7 +32,7 @@ User must have permissions to be able to create /tmp/speed_data file (created au
 
 *make*
 
-## Usage:
+### Usage
 
 Inside first terminal window run command:
 
