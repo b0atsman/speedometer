@@ -2,7 +2,7 @@
 
 ### Description
 
-Sample project for IPC demo.
+Simple project for IPC demo.
 
 Speed generator app uses time based periodic function (sum of two sines) to generate abstract speed value, then passes it to data_bus library via API.
 
