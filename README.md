@@ -4,19 +4,21 @@
 
 Sample project for IPC demo.
 
-Speed generator app used time based periodic function (sum of two sines) to generate abstract speed value, then passes it to data_bus library via API.
+Speed generator app uses time based periodic function (sum of two sines) to generate abstract speed value, then passes it to data_bus library via API.
 
 Speed displays receives speed value from data_bus library via API, and displays it in console.
+
+Library uses shared memory mechanism for data exchange & mutex synchronization.
 
 User must have permissions to be able to create /tmp/speed_data file (created automatically upon start of any application).
 
 ### Requirements
 
-CMake v3.0 (tested on v.3.10.2) 
+Ubuntu Linux (tested on v.18.04)
+
+CMake (tested on v.3.10.2) 
 
 g++ (tested on v.7.5)
-
-Ubuntu Linux (tested on v.18.04)
 
 ### Build procedure
 
